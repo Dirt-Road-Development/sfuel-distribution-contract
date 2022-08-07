@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { PoWDeveloper, PoWDeveloper__factory } from "../typechain";
+import { PoWDeveloper } from "../typechain";
 import dotenv from 'dotenv';
 dotenv.config();
 
