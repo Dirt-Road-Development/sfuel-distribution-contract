@@ -76,8 +76,35 @@ contract PoWSecure is Ownable {
         amount = _newAmount;
         emit AmountUpdated(originalAmount, amount, msg.sender);
     }
+    
+    /**
+      * @dev Toggles the ability for users to use this contract via the sFUEL Station
+      *
+    **/
+    function toggleState() external onlyOwner {
+        isActive = !isActive;
+    }
 
+    /**
+      * @dev Ready to deprecate your contract and upgrade? Hit this to destroy it :)
+      * @dev P.S. Be careful
+    **/
     function deprecate() external onlyOwner {
         selfdestruct(payable(owner()));
     }
+
+    /**
+      * @dev Gets the public amount this faucet gives out
+    **/
+    function getAmount() external view returns (uint256) {
+        return amount;
+    }
+
+    /**
+      * @dev Gets the state of the active contract
+      * If true -> IsActive
+    **/
+   function getState() external view returns (bool) {
+        return isActive;
+   }
 }
