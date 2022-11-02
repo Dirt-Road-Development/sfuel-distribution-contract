@@ -13,7 +13,7 @@ async function deployFixture() {
         value: ethers.utils.parseEther(Constants.startingAllotment)
     });
 
-    const res = await contract.deployed();
+    await contract.deployed();
 
     return { factory, contract, owner, actor1, actor2, actor3 };
 }
@@ -95,10 +95,10 @@ describe("PoWSecure Unit Tests", () => {
             ).to.be.equal(oldAmount);
         })
         it("Should self destruct owner", async() => {
-            const { contract, owner } = await loadFixture(deployFixture);
+            const { contract} = await loadFixture(deployFixture);
 
 
-            const res = await contract.deprecate()
+            await contract.deprecate();
             
             await expect(
                 contract.callStatic.getBalance()
@@ -118,5 +118,6 @@ describe("PoWSecure Unit Tests", () => {
                 await contract.callStatic.getAmount()
             ).to.be.equal(ethers.utils.parseEther(Constants.defaultAmount));
         })
+
     })
 });
