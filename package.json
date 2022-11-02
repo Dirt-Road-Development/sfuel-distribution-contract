@@ -4,20 +4,17 @@
     "deploy:pow": "npx hardhat compile && npx hardhat run --network SKALE ./scripts/deploy_pow.ts"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^1.0.1",
-    "@openzeppelin/contracts": "^4.7.0",
-    "@types/chai": "^4.3.1",
-    "@types/dotenv": "^8.2.0",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "@nomiclabs/hardhat-etherscan": "^3.1.0",
+    "@openzeppelin/contracts": "^4.7.3",
+    "@types/chai": "^4.3.3",
     "@types/mocha": "^9.1.1",
-    "@types/node": "^18.0.3",
     "chai": "^4.3.6",
-    "dotenv": "^16.0.1",
-    "ethers": "^5.6.9",
-    "hardhat": "^2.10.0",
-    "hardhat-deploy": "^0.11.11",
-    "solhint": "^3.3.7",
-    "solidity-coverage": "^0.7.21",
-    "ts-node": "^10.8.2",
-    "typescript": "^4.7.4"
+    "hardhat": "^2.11.2",
+    "mocha": "^10.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "solidity-coverage": "^0.8.2"
   }
 }
