@@ -157,5 +157,19 @@ describe("PoWSecure Unit Tests", () => {
                 await contract.callStatic.getAmount()
             ).to.be.equal(oldAmount);
         })
+        it("Should Change Distribution to 1", async() => {
+            const { contract, owner } = await loadFixture(deployFixture);
+
+            const newAmount: BigNumber = ethers.utils.parseEther("0.005");
+            const oldAmount: BigNumber = ethers.utils.parseEther("1"); 
+
+            expect(
+                await contract.updateAmount(newAmount)
+            ).to.emit(Constants.name, "AmountUpdated").withArgs(oldAmount, newAmount, owner.address);
+        
+            expect(
+                await contract.callStatic.getAmount()
+            ).to.be.equal(newAmount); 
+        })
     })
 });
