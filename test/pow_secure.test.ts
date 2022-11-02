@@ -118,6 +118,44 @@ describe("PoWSecure Unit Tests", () => {
                 await contract.callStatic.getAmount()
             ).to.be.equal(ethers.utils.parseEther(Constants.defaultAmount));
         })
+        it("Should self destruct owner", async() => {
+            const { contract } = await loadFixture(deployFixture);
 
+            await contract.withdraw();
+            
+            expect(
+               await contract.callStatic.getBalance()
+            ).to.be.equal(BigNumber.from(0));
+        })
+        it("Should throw for non owner and not change", async() => {
+            const { contract, actor1 } = await loadFixture(deployFixture);
+            
+            const nonOwnerContract = contract.connect(actor1);
+            
+            await expect(
+             nonOwnerContract.withdraw()
+            ).to.be.revertedWith(Constants.errors.Ownable);
+
+            expect(
+               await contract.callStatic.getBalance()
+            ).to.be.equal(ethers.utils.parseEther(Constants.startingAllotment));
+        })
+    })
+    describe("Update Amount General Check", () => {
+        it("Should throw an error on 0", async() => {
+            
+            const { contract } = await loadFixture(deployFixture);
+            
+            const newAmount: BigNumber = ethers.utils.parseEther("0");
+            const oldAmount: BigNumber = ethers.utils.parseEther("0.0075"); 
+            
+            await expect(
+               contract.updateAmount(newAmount)
+            ).to.be.revertedWith(Constants.errors.Amount);
+
+            expect(
+                await contract.callStatic.getAmount()
+            ).to.be.equal(oldAmount);
+        })
     })
 });

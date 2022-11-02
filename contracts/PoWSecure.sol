@@ -73,7 +73,7 @@ contract PoWSecure is Ownable {
       * @param _newAmount -> Uint256
     **/
     function updateAmount(uint256 _newAmount) external onlyOwner {
-        require(amount > 0, "PowSecure: Invalid Amount");
+        require(_newAmount > 0, "PowSecure: Invalid Amount");
         uint256 originalAmount = amount;
         amount = _newAmount;
         emit AmountUpdated(originalAmount, amount, msg.sender);
