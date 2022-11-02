@@ -31,10 +31,13 @@ import type {
 export interface PoWSecureInterface extends utils.Interface {
   functions: {
     "deprecate()": FunctionFragment;
+    "getAmount()": FunctionFragment;
     "getBalance()": FunctionFragment;
+    "getState()": FunctionFragment;
     "owner()": FunctionFragment;
     "pay(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "toggleState()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "updateAmount(uint256)": FunctionFragment;
     "withdraw()": FunctionFragment;
@@ -43,20 +46,25 @@ export interface PoWSecureInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "deprecate"
+      | "getAmount"
       | "getBalance"
+      | "getState"
       | "owner"
       | "pay"
       | "renounceOwnership"
+      | "toggleState"
       | "transferOwnership"
       | "updateAmount"
       | "withdraw"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "deprecate", values?: undefined): string;
+  encodeFunctionData(functionFragment: "getAmount", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getBalance",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "getState", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "pay",
@@ -64,6 +72,10 @@ export interface PoWSecureInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "toggleState",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -77,11 +89,17 @@ export interface PoWSecureInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "deprecate", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getAmount", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getState", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pay", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "toggleState",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -98,11 +116,13 @@ export interface PoWSecureInterface extends utils.Interface {
     "AmountUpdated(uint256,uint256,address)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Payed(address,uint256,uint256)": EventFragment;
+    "StateToggled(address,bool)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "AmountUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Payed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "StateToggled"): EventFragment;
 }
 
 export interface AmountUpdatedEventObject {
@@ -141,6 +161,17 @@ export type PayedEvent = TypedEvent<
 
 export type PayedEventFilter = TypedEventFilter<PayedEvent>;
 
+export interface StateToggledEventObject {
+  signer: string;
+  newState: boolean;
+}
+export type StateToggledEvent = TypedEvent<
+  [string, boolean],
+  StateToggledEventObject
+>;
+
+export type StateToggledEventFilter = TypedEventFilter<StateToggledEvent>;
+
 export interface PoWSecure extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -172,7 +203,11 @@ export interface PoWSecure extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getAmount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getState(overrides?: CallOverrides): Promise<[boolean]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -182,6 +217,10 @@ export interface PoWSecure extends BaseContract {
     ): Promise<ContractTransaction>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    toggleState(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -204,7 +243,11 @@ export interface PoWSecure extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
   getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getState(overrides?: CallOverrides): Promise<boolean>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -214,6 +257,10 @@ export interface PoWSecure extends BaseContract {
   ): Promise<ContractTransaction>;
 
   renounceOwnership(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  toggleState(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -234,7 +281,11 @@ export interface PoWSecure extends BaseContract {
   callStatic: {
     deprecate(overrides?: CallOverrides): Promise<void>;
 
+    getAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getState(overrides?: CallOverrides): Promise<boolean>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -244,6 +295,8 @@ export interface PoWSecure extends BaseContract {
     ): Promise<void>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    toggleState(overrides?: CallOverrides): Promise<void>;
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
@@ -289,6 +342,15 @@ export interface PoWSecure extends BaseContract {
       amount?: PromiseOrValue<BigNumberish> | null,
       timestamp?: PromiseOrValue<BigNumberish> | null
     ): PayedEventFilter;
+
+    "StateToggled(address,bool)"(
+      signer?: PromiseOrValue<string> | null,
+      newState?: PromiseOrValue<boolean> | null
+    ): StateToggledEventFilter;
+    StateToggled(
+      signer?: PromiseOrValue<string> | null,
+      newState?: PromiseOrValue<boolean> | null
+    ): StateToggledEventFilter;
   };
 
   estimateGas: {
@@ -296,7 +358,11 @@ export interface PoWSecure extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getAmount(overrides?: CallOverrides): Promise<BigNumber>;
+
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getState(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -306,6 +372,10 @@ export interface PoWSecure extends BaseContract {
     ): Promise<BigNumber>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    toggleState(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -329,7 +399,11 @@ export interface PoWSecure extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    getAmount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getState(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -339,6 +413,10 @@ export interface PoWSecure extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    toggleState(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

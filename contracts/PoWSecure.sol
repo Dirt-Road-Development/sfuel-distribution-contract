@@ -12,6 +12,8 @@ contract PoWSecure is Ownable {
 
     event Payed(address indexed payee, uint256 indexed amount, uint256 indexed timestamp);
     
+    event StateToggled(address indexed signer, bool indexed newState);
+
     /**
       * @dev the amount the contract should fill a user up to
       * @notice can be changed by the owner
@@ -83,6 +85,7 @@ contract PoWSecure is Ownable {
     **/
     function toggleState() external onlyOwner {
         isActive = !isActive;
+        emit StateToggled(msg.sender, isActive);
     }
 
     /**
