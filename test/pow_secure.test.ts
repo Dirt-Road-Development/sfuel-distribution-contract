@@ -78,18 +78,45 @@ describe("PoWSecure Unit Tests", () => {
                 await contract.callStatic.getAmount()
             ).to.be.equal(newAmount);
         })
-        xit("Should throw for non owner and not change", async() => {
+        it("Should throw for non owner and not change", async() => {
             const { contract, actor1 } = await loadFixture(deployFixture);
             
             const nonOwnerContract = contract.connect(actor1);
 
+            const newAmount: BigNumber = ethers.utils.parseEther("0.005");
+            const oldAmount: BigNumber = ethers.utils.parseEther("0.0075"); 
+            
             await expect(
-               nonOwnerContract.toggleState()
+               nonOwnerContract.updateAmount(newAmount)
             ).to.be.revertedWith(Constants.errors.Ownable);
 
             expect(
-                await contract.callStatic.getState()
-            ).to.be.true;
+                await contract.callStatic.getAmount()
+            ).to.be.equal(oldAmount);
+        })
+        it("Should self destruct owner", async() => {
+            const { contract, owner } = await loadFixture(deployFixture);
+
+
+            const res = await contract.deprecate()
+            
+            await expect(
+                contract.callStatic.getBalance()
+            ).to.be.reverted;
+
+        })
+        it("Should throw for non owner and not change", async() => {
+            const { contract, actor1 } = await loadFixture(deployFixture);
+            
+            const nonOwnerContract = contract.connect(actor1);
+            
+            await expect(
+               nonOwnerContract.deprecate()
+            ).to.be.revertedWith(Constants.errors.Ownable);
+
+            expect(
+                await contract.callStatic.getAmount()
+            ).to.be.equal(ethers.utils.parseEther(Constants.defaultAmount));
         })
     })
 });
