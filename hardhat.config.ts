@@ -1,13 +1,19 @@
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "solidity-coverage";
+import "hardhat-deploy";
+import "hardhat-deploy-ethers";
 
 dotenv.config();
 
 const config: HardhatUserConfig = {
   solidity: "0.8.4",
+  namedAccounts: {
+    deployer: {
+        default: 0
+    }
+  },
   networks: {
     SKALE: {
       url: process.env.RPC_URL as string,

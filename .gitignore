@@ -7,5 +7,7 @@ coverage.json
 cache
 artifacts
 typechain-types
-
+typechain
+deployments
+package-lock.json
 *.swp
