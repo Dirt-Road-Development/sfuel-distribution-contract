@@ -1,7 +1,7 @@
 {
   "name": "skale-pow-deployment",
   "scripts": {
-    "deploy:pow": "npx hardhat compile && npx hardhat run --network SKALE ./scripts/deploy_pow.ts"
+    "deploy:pow": "npx hardhat compile && npx hardhat run --network SKALE"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
@@ -11,10 +11,11 @@
     "@types/mocha": "^9.1.1",
     "chai": "^4.3.6",
     "hardhat": "^2.11.2",
+    "hardhat-deploy": "^0.11.19",
+    "hardhat-deploy-ethers": "^0.3.0-beta.13",
     "mocha": "^10.0.0"
   },
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "solidity-coverage": "^0.8.2"
+    "dotenv": "^16.0.3"
   }
 }
