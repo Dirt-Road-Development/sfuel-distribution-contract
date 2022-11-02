@@ -5,6 +5,7 @@ export default {
     errors: {
         Ownable: "Ownable: caller is not the owner",
         Amount: "PowSecure: Invalid Amount",
-        Paused: "PoWSecure: Contract is Paused"
+        Paused: "PoWSecure: Contract is Paused",
+        Empty: "PoWSecure: Contract Empty"
     }
 }

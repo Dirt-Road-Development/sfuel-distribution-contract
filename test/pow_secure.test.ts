@@ -191,7 +191,33 @@ describe("PoWSecure Unit Tests", () => {
                     await wallet.getBalance()
                 ).to.be.equal(ethers.utils.parseEther(Constants.defaultAmount));
             }
-            
         })
+        it("Should fail on 134 fill up due to being empty", async() => {
+            const { contract } = await loadFixture(deployFixture);
+            const provider = contract.provider;
+
+            for (let i = 0; i < 133; i++) {
+                let wallet = ethers.Wallet.createRandom();
+                wallet = wallet.connect(provider);
+                const rng = wallet.address;
+
+                await expect(
+                    contract.pay(rng)
+                ).to.emit(contract, "Payed");
+
+                expect(
+                    await wallet.getBalance()
+                ).to.be.equal(ethers.utils.parseEther(Constants.defaultAmount));
+            }
+
+            let wallet = ethers.Wallet.createRandom();
+            wallet = wallet.connect(provider);
+            const rng = wallet.address;
+            
+            await expect(
+                contract.pay(rng)
+            ).to.be.revertedWith(Constants.errors.Empty);
+        })
+
     });
 });

@@ -56,6 +56,8 @@ contract PoWSecure is Ownable {
     **/
     function pay(address payable receiver) external payable onlyActive {
         require(amount > 0, "PowSecure: Invalid amount");
+        require(getBalance() >= amount, "PoWSecure: Contract Empty");
+
         uint256 receiverBalance = receiver.balance;
         if (receiverBalance < amount) {
             uint256 payableAmount = amount - receiverBalance;
