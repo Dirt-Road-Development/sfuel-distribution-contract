@@ -29,7 +29,7 @@ Each SKALE Chain utilizes its own sFUEL token meaning that an attack on one netw
 ### Setup Environment
 
 Edit the .env file that was created using VIM ```vim .env```, Nano ```nano .env```, or your favorite editor or IDE.
-The .env file after running the setup scripts should look identical to the (Example ENV File)[./env.exmaple]
+The .env file after running the setup scripts should look identical to the example found at (.env/example).
 
 ```
 # Private Key - DO NOT SHARE - Should NOT start with 0x
@@ -48,17 +48,85 @@ API_URL=
 BROWSER_URL=
 ```
 
-5. Fill the .env (Environment Variable File) with the proper values
-    This is your SKALE Chain Deployer Private Key
-    - DEPLOYER_PRIVATE_KEY=abcd... 
-    This is the RPC URL of your SKALE Chain
-    - RPC_URL=https://...
+This fully filled out for a SKALE chain should look similar to the following:
 
-## Deploy
-You can either deploy through npm scripts or bash scripts. 
+```
+# Private Key - DO NOT SHARE - Should NOT start with 0x
+DEPLOYER_PRIVATE_KEY=0000000000000000000000000000000000000000000000000000000000000000
 
-### NPM Deployment
-Run ```npm run deploy:pow```
+# SKALE Chain RPC
+RPC_URL=https://mainnet.skalenodes.com/v1/some-amazing-schain-name
 
-### Bash Deployment
-Run ```chmod +x ./deploy_pow.sh && ./deploy_pow.sh```
+# Decimal Form
+CHAIN_ID=11111111111
+
+# Blockscout -> Browser Url + /api
+API_URL=https://some-amazing-schain-name.explorer.mainnet.skalenodes.com/api
+
+# Blockscout
+BROWSER_URL=https://some-amazing-schain-name.explorer.mainnet.skalenodes.com
+```
+
+**NOTICE** In order to deploy on a default SKALE Chain, the DEPLOYER address that is derived from the private key
+above must have DEPLOYER_ROLE assigned from the (ConfigController)[https://github.com/skalenetwork/config-controller] as well as sFUEL which can be attained from the SKALE Chain Owner.
+
+## Deployment
+
+Deploying to your chosen chain can happen in a few different ways:
+
+1. NPM Script
+
+Run the following in your terminal:
+
+```
+  npm run deploy
+
+```
+
+The NPM script is an automation identical to the bash script found below. It utilizes the hardhat cli to deploy to the SKALE Network with the default account and network details being configured from the .env file. 
+
+2. Bash Script
+
+Run the following in your terminal:
+```
+./deploy_secure.sh
+```
+
+The bash script found (here)[./deploy_secure.sh] when run will use the default setup that is created for you.
+This means that the provided RPC Url and Private Key will be used to deploy the PoWSecure contract on your chosen SKALE Chain.
+
+**NOTE** Both options above run identically. There is no room for script customization in either of these. If the .env is not filled out properly it will throw an error.
+
+3. Direct from the Command Line (More Customization)
+
+If you are looking to have a bit more customization to your deployment, the hardhat cli is available in this repo once setup and is exposed via npx hardhat <cmd>.
+
+For example, you could setup a different network called CUSTOM and then run the script with ```npx hardhat deploy --network CUSTOM``` in which case the custom network details would be utilized.
+
+## Configuration
+
+The repo contains a JSON file in the root called (config.json)[./config.json] that contains the defaults for the various scripts. These defaults are listed below and can be changed and modified to customize your PoW Contract.
+
+#### Default Configuration
+
+```json
+  {
+    "deploy": {
+        "contractName": "PoWSecure",
+        "log": true,
+        "value": "100",
+        "tags": [
+            "POW",
+            "Secure",
+            "Default"
+        ]
+    },
+    "verify": {
+        "taskName": "verify:verify",
+        "contract": "contracts/PoWSecure.sol:PowSecure"
+    }
+  }
+```
+
+
+
