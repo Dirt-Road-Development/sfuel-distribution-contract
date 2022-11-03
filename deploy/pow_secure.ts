@@ -1,6 +1,7 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { ethers } from 'ethers';
+import Config from '../config.json';
 
 const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
     
@@ -10,22 +11,22 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
     const { deployer } = await getNamedAccounts();
     
     const result =  await deploy(
-        "PoWSecure",
+        Config.deploy.contractName,
         {
             from: deployer,
-            log: true,
-            value: ethers.utils.parseEther("100")
+            log: Config.deploy.log,
+            value: ethers.utils.parseEther(Config.deploy.value)
         } 
     );
     
     const address: string = result.address;
 
-    await hre.run("verify:verify", {
+    await hre.run(Config.verify.taskName, {
         address,
-        contract: "contracts/PoWSecure.sol:PoWSecure"
+        contract: Config.verify.contract
     });
 }
 
 export default func;
 
-func.tags = ["POW", "Secure", "Default"];
+func.tags = Config.deploy.tags;
