@@ -20,7 +20,7 @@ Each SKALE Chain utilizes its own sFUEL token meaning that an attack on one netw
 
 ### What does this repo do?
 The client side of Proof-of-Work on SKALE is very flexible. The contract on the other hand is very simple and acts identical to a faucet. However, in order to be compatible with community tools and make the deployment both easier and faster;
-this repository offers a simple solution to get the Proof-of-Work distribution running on your SKALE chain quickly. Additionally, after deploying to your chain, your chain is then immediatley compatible with the (sFUEL Station)[https://sfuel.station].
+this repository offers a simple solution to get the Proof-of-Work distribution running on your SKALE chain quickly. Additionally, after deploying to your chain, your chain is then immediatley compatible with the [sFUEL Station](https://sfuel.station).
 
 ## Installation
 
@@ -33,7 +33,7 @@ this repository offers a simple solution to get the Proof-of-Work distribution r
 ### Setup Environment
 
 Edit the .env file that was created using VIM ```vim .env```, Nano ```nano .env```, or your favorite editor or IDE.
-The .env file after running the setup scripts should look identical to the example found at (.env/example).
+The .env file after running the setup scripts should look identical to the example found [here](.env/example).
 
 ```
 # Private Key - DO NOT SHARE - Should NOT start with 0x
@@ -72,7 +72,7 @@ BROWSER_URL=https://some-amazing-schain-name.explorer.mainnet.skalenodes.com
 ```
 
 **NOTICE** In order to deploy on a default SKALE Chain, the DEPLOYER address that is derived from the private key
-above must have DEPLOYER_ROLE assigned from the (ConfigController)[https://github.com/skalenetwork/config-controller] as well as sFUEL which can be attained from the SKALE Chain Owner.
+above must have DEPLOYER_ROLE assigned from the [ConfigController](https://github.com/skalenetwork/config-controller) as well as sFUEL which can be attained from the SKALE Chain Owner.
 
 ## Deployment
 
@@ -95,7 +95,7 @@ Run the following in your terminal:
 ./deploy_secure.sh
 ```
 
-The bash script found (here)[./deploy_secure.sh] when run will use the default setup that is created for you.
+The bash script found [here](./deploy_secure.sh) when run will use the default setup that is created for you.
 This means that the provided RPC Url and Private Key will be used to deploy the PoWSecure contract on your chosen SKALE Chain.
 
 **NOTE** Both options above run identically. There is no room for script customization in either of these. If the .env is not filled out properly it will throw an error.
@@ -108,7 +108,7 @@ For example, you could setup a different network called CUSTOM and then run the 
 
 ## Configuration
 
-The repo contains a JSON file in the root called (config.json)[./config.json] that contains the defaults for the various scripts. These defaults are listed below and can be changed and modified to customize your PoW Contract.
+The repo contains a JSON file in the root called [config.json](./config.json) that contains the defaults for the various scripts. These defaults are listed below and can be changed and modified to customize your PoW Contract.
 
 #### Default Configuration
 
