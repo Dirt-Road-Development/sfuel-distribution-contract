@@ -8,8 +8,8 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
     const { deploy } = deployments;
 
     const { deployer } = await getNamedAccounts();
-
-    await deploy(
+    
+    const result =  await deploy(
         "PoWSecure",
         {
             from: deployer,
@@ -17,6 +17,13 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
             value: ethers.utils.parseEther("100")
         } 
     );
+    
+    const address: string = result.address;
+
+    await hre.run("verify:verify", {
+        address,
+        contract: "contracts/PoWSecure.sol:PoWSecure"
+    });
 }
 
 export default func;
