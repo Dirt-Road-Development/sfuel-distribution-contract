@@ -82,9 +82,8 @@ Deploying to your chosen chain can happen in a few different ways:
 
 Run the following in your terminal:
 
-```
+```bash
   npm run deploy
-
 ```
 
 The NPM script is an automation identical to the bash script found below. It utilizes the hardhat cli to deploy to the SKALE Network with the default account and network details being configured from the .env file. 
@@ -92,7 +91,7 @@ The NPM script is an automation identical to the bash script found below. It uti
 2. Bash Script
 
 Run the following in your terminal:
-```
+```bash
 ./deploy_secure.sh
 ```
 
