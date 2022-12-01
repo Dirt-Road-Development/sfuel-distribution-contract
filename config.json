@@ -2,7 +2,7 @@
     "deploy": {
         "contractName": "PoWSecure",
         "log": true,
-        "value": "100",
+        "value": "5",
         "tags": [
             "POW",
             "Secure",
@@ -11,6 +11,6 @@
     },
     "verify": {
         "taskName": "verify:verify",
-        "contract": "contracts/PoWSecure.sol:PowSecure"
+        "contract": "contracts/PoWSecure.sol:PoWSecure"
     }
 }

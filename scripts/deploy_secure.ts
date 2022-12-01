@@ -4,7 +4,7 @@ async function main() {
 
   const factory = await ethers.getContractFactory("PoWSecure");
   const contract = await factory.deploy({
-    value: ethers.utils.parseEther("1000"),
+    value: ethers.utils.parseEther("15"),
     gasLimit: ethers.utils.hexlify(5000000)
   });
 
