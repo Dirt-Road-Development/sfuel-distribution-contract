@@ -1,6 +1,6 @@
 export default {
     name: "PoWSecure",
-    defaultAmount: "0.0075",
+    defaultAmount: "0.0001",
     startingAllotment: "1",
     errors: {
         Ownable: "Ownable: caller is not the owner",
