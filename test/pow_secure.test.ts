@@ -68,7 +68,7 @@ describe("PoWSecure Unit Tests", () => {
             const { contract, owner } = await loadFixture(deployFixture);
 
             const newAmount: BigNumber = ethers.utils.parseEther("0.005");
-            const oldAmount: BigNumber = ethers.utils.parseEther("0.0075"); 
+            const oldAmount: BigNumber = ethers.utils.parseEther(Constants.defaultAmount); 
 
             expect(
                 await contract.updateAmount(newAmount)
@@ -84,7 +84,7 @@ describe("PoWSecure Unit Tests", () => {
             const nonOwnerContract = contract.connect(actor1);
 
             const newAmount: BigNumber = ethers.utils.parseEther("0.005");
-            const oldAmount: BigNumber = ethers.utils.parseEther("0.0075"); 
+            const oldAmount: BigNumber = ethers.utils.parseEther(Constants.defaultAmount); 
             
             await expect(
                nonOwnerContract.updateAmount(newAmount)
@@ -147,7 +147,7 @@ describe("PoWSecure Unit Tests", () => {
             const { contract } = await loadFixture(deployFixture);
             
             const newAmount: BigNumber = ethers.utils.parseEther("0");
-            const oldAmount: BigNumber = ethers.utils.parseEther("0.0075"); 
+            const oldAmount: BigNumber = ethers.utils.parseEther(Constants.defaultAmount); 
             
             await expect(
                contract.updateAmount(newAmount)
@@ -193,8 +193,14 @@ describe("PoWSecure Unit Tests", () => {
             }
         })
         it("Should fail on 134 fill up due to being empty", async() => {
-            const { contract } = await loadFixture(deployFixture);
+            const { contract, owner } = await loadFixture(deployFixture);
             const provider = contract.provider;
+
+            const newAmount: BigNumber = ethers.utils.parseEther("0.0075");
+            const oldAmount: BigNumber = ethers.utils.parseEther(Constants.defaultAmount); 
+            expect(
+                await contract.updateAmount(newAmount)
+            ).to.emit(Constants.name, "AmountUpdated").withArgs(oldAmount, newAmount, owner.address);
 
             for (let i = 0; i < 133; i++) {
                 let wallet = ethers.Wallet.createRandom();
@@ -207,7 +213,7 @@ describe("PoWSecure Unit Tests", () => {
 
                 expect(
                     await wallet.getBalance()
-                ).to.be.equal(ethers.utils.parseEther(Constants.defaultAmount));
+                ).to.be.equal(newAmount);
             }
 
             let wallet = ethers.Wallet.createRandom();
