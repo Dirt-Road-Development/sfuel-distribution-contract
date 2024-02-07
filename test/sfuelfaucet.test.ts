@@ -7,10 +7,10 @@ import Constants from './constants';
 async function deployFixture() {
     const [ owner, actor1, actor2, actor3 ] = await ethers.getSigners();
 
-    const factory = await ethers.getContractFactory(Constants.name);
+    const factory = await ethers.getContractFactory("sFUELFaucet");
     
     const contract = await factory.deploy({
-        value: ethers.utils.parseEther(Constants.startingAllotment)
+        value: ethers.utils.parseEther("1")
     });
 
     await contract.deployed();
@@ -18,7 +18,7 @@ async function deployFixture() {
     return { factory, contract, owner, actor1, actor2, actor3 };
 }
 
-describe("PoWSecure Unit Tests", () => {
+describe("Unit Tests", () => {
     describe("Deployment Checks", () => {
         it("Should Deploy from the Owner Account", async() => {
             const { contract } = await loadFixture(deployFixture);
@@ -29,7 +29,7 @@ describe("PoWSecure Unit Tests", () => {
             
             expect(
                 await contract.callStatic.getBalance()
-            ).to.be.equal(ethers.utils.parseEther(Constants.startingAllotment));
+            ).to.be.equal(ethers.utils.parseEther("1"));
         })
         it("Expect Contract to Be Active", async() => {
             const { contract } = await loadFixture(deployFixture);
