@@ -1,3 +1,5 @@
+![GitHub](https://img.shields.io/github/license/Dirt-Road-Development/sfuel-distribution-contract.svg)
+
 # SKALE Network sFUEL Faucet Contract
 
 ## Overview
