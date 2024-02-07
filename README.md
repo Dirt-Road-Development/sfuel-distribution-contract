@@ -79,7 +79,7 @@ Run the following in your terminal:
 
 ## License
 
-![GitHub](https://img.shields.io/github/license/dirt-road-development/skale-distribution-contract.svg)
+![GitHub](https://img.shields.io/github/license/Dirt-Road-Development/sfuel-distribution-contract.svg)
 
 All contributions are made under the [MIT License](https://www.mit.edu/~amini/LICENSE.md). See [LICENSE](LICENSE).
 
