@@ -1,7 +1,15 @@
 {
   "name": "skale-pow-deployment",
+  "author": "TheGreatAxios <sawyer@dirtroad.dev>",
   "scripts": {
-    "deploy": "npx hardhat compile && npx hardhat run --network SKALE"
+    "deploy:calypso": "npx hardhat deploy --network calypso-mainnet",
+    "deploy:europa": "npx hardhat deploy --network europa-mainnet",
+    "deploy:nebula": "npx hardhat deploy --network nebula-mainnet",
+    "deploy:titan": "npx hardhat deploy --network titan-mainnet",
+    "deploy:calypso:testnet": "npx hardhat deploy --network calypso-testnet",
+    "deploy:europa:testnet": "npx hardhat deploy --network europa-testnet",
+    "deploy:nebula:testnet": "npx hardhat deploy --network nebula-testnet",
+    "deploy:titan:testnet": "npx hardhat deploy --network titan-testnet",
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
