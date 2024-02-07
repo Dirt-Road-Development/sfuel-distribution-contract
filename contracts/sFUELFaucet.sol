@@ -1,10 +1,31 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.19;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract PoWSecure is Ownable { 
+contract sFUELFaucet is AccessControl { 
     
+    bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
+
+    
+    /**
+     * @dev the amount the contract should fill a user up to
+     * 0.0001 is enough to send 10K txs with average gas consumption 100K gas 
+     * @notice can be changed by the owner
+     */
+    uint256 public amount = 0.0001 ether;
+
+    /**
+     * @dev Value used to determine state
+     */
+    bool public isActive;
+
+    /** 
+     * @dev the total amount of fill ups all time
+    */
+    uint256 public totalFillUps;
+    
+
     /**
      * @dev the AmountUpdated Event is called when amount which contracts
      * pays to user is updated
@@ -22,18 +43,6 @@ contract PoWSecure is Ownable {
     event StateToggled(address indexed signer, bool indexed newState);
 
     /**
-     * @dev the amount the contract should fill a user up to
-     * 0.0001 is enough to send 10K txs with average gas consumption 100K gas 
-     * @notice can be changed by the owner
-     */
-    uint256 private amount = 0.0001 ether;
-
-    /**
-     * @dev Value used to determine state
-     */
-    bool private isActive;
-    
-    /**
      * @dev Allows owner to temporarily pause the contract
      */
     modifier onlyActive {
@@ -42,6 +51,9 @@ contract PoWSecure is Ownable {
     }
 
     constructor () payable {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(MANAGER_ROLE, msg.sender);
+        _grantRole(MANAGER_ROLE, 0xD244519000000000000000000000000000000000);
         isActive = true;
     }
 
@@ -66,13 +78,18 @@ contract PoWSecure is Ownable {
      * @dev The pay function hit via PoW
      * @param receiver is a payable address
      */
-    function pay(address payable receiver) external onlyActive {
-        require(getBalance() >= amount, "PoWSecure: Contract Empty");
+    function pay(address payable receiver) external onlyRole(MANAGER_ROLE) {
+        require(getBalance() >= amount, "sFUELFaucet: Contract Empty");
+        require(msg.sender.balance == 0, "sFUELFaucet: Caller must have no sFUEL");
 
         uint256 receiverBalance = receiver.balance;
-        if (receiverBalance < amount) {
+
+        if (receiverBalance < amount && receiverBalance < 0.000005 ether) {
+
             uint256 payableAmount = amount - receiverBalance;
             receiver.transfer(payableAmount);
+            totalFillUps++;
+
             emit Payed(receiver, payableAmount, block.timestamp);
         }
     }
@@ -80,7 +97,7 @@ contract PoWSecure is Ownable {
     /**
      * @dev Withdraw all SFUEL amount to the owner
      */
-    function withdraw() external onlyOwner {
+    function withdraw() external onlyRole(MANAGER_ROLE) {
         payable(owner()).transfer(getBalance());
     }
     
@@ -88,8 +105,8 @@ contract PoWSecure is Ownable {
      * @dev Updates the base amount the contract checks for
      * @param _newAmount -> Uint256
      */
-    function updateAmount(uint256 _newAmount) external onlyOwner {
-        require(_newAmount > 0, "PowSecure: Invalid Amount");
+    function updateAmount(uint256 _newAmount) external onlyRole(MANAGER_ROLE) {
+        require(_newAmount > 0, "sFUELFaucet: Invalid Amount");
         uint256 originalAmount = amount;
         amount = _newAmount;
         emit AmountUpdated(originalAmount, amount, msg.sender);
@@ -98,31 +115,8 @@ contract PoWSecure is Ownable {
     /**
      * @dev Toggles the ability for users to use this contract via the sFUEL Station
      */
-    function toggleState() external onlyOwner {
+    function toggleState() external onlyRole(MANAGER_ROLE) {
         isActive = !isActive;
         emit StateToggled(msg.sender, isActive);
-    }
-
-    /**
-     * @dev Ready to deprecate your contract and upgrade? Hit this to destroy it :)
-     * @dev P.S. Be careful
-     */
-    function deprecate() external onlyOwner {
-        selfdestruct(payable(owner()));
-    }
-
-    /**
-     * @dev Gets the public amount this faucet gives out
-     */
-    function getAmount() external view returns (uint256) {
-        return amount;
-    }
-
-    /**
-     * @dev Gets the state of the active contract
-     * If true -> IsActive
-     */
-    function getState() external view returns (bool) {
-        return isActive;
     }
 }

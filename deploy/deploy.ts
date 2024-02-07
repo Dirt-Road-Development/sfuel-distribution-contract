@@ -11,19 +11,19 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
     const { deployer } = await getNamedAccounts();
     
     const result =  await deploy(
-        Config.deploy.contractName,
+        "sFUELFaucet",
         {
             from: deployer,
             log: Config.deploy.log,
-            value: ethers.utils.parseEther(Config.deploy.value)
+            value: ethers.utils.parseEther("5")
         } 
     );
     
     const address: string = result.address;
 
-    await hre.run(Config.verify.taskName, {
+    await hre.run("verify:verify", {
         address,
-        contract: Config.verify.contract
+        contract: "contracts/sFUELFaucet.sol:sFUELFaucet"
     });
 }
 
