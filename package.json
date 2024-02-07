@@ -1,5 +1,6 @@
 {
   "name": "skale-pow-deployment",
+  "version": "2.0.0",
   "author": "TheGreatAxios <sawyer@dirtroad.dev>",
   "scripts": {
     "deploy:calypso": "npx hardhat deploy --network calypso-mainnet",
