@@ -1,4 +1,6 @@
-# SKALE Proof of Work Deployment
+![GitHub](https://img.shields.io/github/license/Dirt-Road-Development/sfuel-distribution-contract.svg)
+
+# SKALE Network sFUEL Faucet Contract
 
 ## Overview
 
@@ -37,38 +39,14 @@ The .env file after running the setup scripts should look identical to the examp
 
 ```
 # Private Key - DO NOT SHARE - Should NOT start with 0x
-DEPLOYER_PRIVATE_KEY=
-
-# SKALE Chain RPC
-RPC_URL=
-
-# Decimal Form
-CHAIN_ID= 
-
-# Blockscout -> Browser Url + /api
-API_URL=
-
-# Blockscout
-BROWSER_URL=
+PRIVATE_KEY
 ```
 
 This fully filled out for a SKALE chain should look similar to the following:
 
 ```
 # Private Key - DO NOT SHARE - Should NOT start with 0x
-DEPLOYER_PRIVATE_KEY=0000000000000000000000000000000000000000000000000000000000000000
-
-# SKALE Chain RPC
-RPC_URL=https://mainnet.skalenodes.com/v1/some-amazing-schain-name
-
-# Decimal Form
-CHAIN_ID=11111111111
-
-# Blockscout -> Browser Url + /api
-API_URL=https://some-amazing-schain-name.explorer.mainnet.skalenodes.com/api
-
-# Blockscout
-BROWSER_URL=https://some-amazing-schain-name.explorer.mainnet.skalenodes.com
+PRIVATE_KEY=0000000000000000000000000000000000000000000000000000000000000000
 ```
 
 **NOTICE** In order to deploy on a default SKALE Chain, the DEPLOYER address that is derived from the private key
@@ -83,53 +61,30 @@ Deploying to your chosen chain can happen in a few different ways:
 Run the following in your terminal:
 
 ```bash
-  npm run deploy
+  npm run deploy --network <network-of-choice>
 ```
 
-The NPM script is an automation identical to the bash script found below. It utilizes the hardhat cli to deploy to the SKALE Network with the default account and network details being configured from the .env file. 
-
-2. Bash Script
-
-Run the following in your terminal:
-```bash
-./deploy_secure.sh
-```
-
-The bash script found [here](./deploy_secure.sh) when run will use the default setup that is created for you.
-This means that the provided RPC Url and Private Key will be used to deploy the PoWSecure contract on your chosen SKALE Chain.
-
-**NOTE** Both options above run identically. There is no room for script customization in either of these. If the .env is not filled out properly it will throw an error.
-
-3. Direct from the Command Line (More Customization)
-
-If you are looking to have a bit more customization to your deployment, the hardhat cli is available in this repo once setup and is exposed via npx hardhat <cmd>.
-
-For example, you could setup a different network called CUSTOM and then run the script with ```npx hardhat deploy --network CUSTOM``` in which case the custom network details would be utilized.
-
-## Configuration
-
-The repo contains a JSON file in the root called [config.json](./config.json) that contains the defaults for the various scripts. These defaults are listed below and can be changed and modified to customize your PoW Contract.
-
-#### Default Configuration
-
-```json
-  {
-    "deploy": {
-        "contractName": "PoWSecure",
-        "log": true,
-        "value": "100",
-        "tags": [
-            "POW",
-            "Secure",
-            "Default"
-        ]
-    },
-    "verify": {
-        "taskName": "verify:verify",
-        "contract": "contracts/PoWSecure.sol:PowSecure"
-    }
-  }
-```
+### Network Options
 
 
+#### Mainnet
+- calypso-mainnet
+- europa-mainnet
+- nebula-mainnet
+- titan-mainnet
+
+#### Testnet
+- calypso-testnet
+- europa-testnet
+- nebula-testnet
+- titan-testnet
+
+## License
+
+![GitHub](https://img.shields.io/github/license/Dirt-Road-Development/sfuel-distribution-contract.svg)
+
+All contributions are made under the [MIT License](https://www.mit.edu/~amini/LICENSE.md). See [LICENSE](LICENSE).
+
+## Security and Liability
+The sFUEL Faucet and code is WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
