@@ -1,7 +1,6 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { ethers } from 'ethers';
-import Config from '../config.json';
 
 const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
     
@@ -14,7 +13,7 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
         "sFUELFaucet",
         {
             from: deployer,
-            log: Config.deploy.log,
+            log: true,
             value: ethers.utils.parseEther("5")
         } 
     );
@@ -29,4 +28,4 @@ const func: DeployFunction = async function(hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = Config.deploy.tags;
+func.tags = ["deploy", "faucet"];

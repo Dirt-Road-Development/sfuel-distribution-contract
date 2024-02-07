@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: MIT
+//SPDX-License-Identifier: MIT)
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -19,6 +19,11 @@ contract sFUELFaucet is AccessControl {
      * @dev Value used to determine state
      */
     bool public isActive;
+
+    /**
+     * @dev The chain owner multisig
+     */
+    address public constant MULTISIG_ADDRESS = 0xD244519000000000000000000000000000000000;
 
     /** 
      * @dev the total amount of fill ups all time
@@ -53,7 +58,7 @@ contract sFUELFaucet is AccessControl {
     constructor () payable {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MANAGER_ROLE, msg.sender);
-        _grantRole(MANAGER_ROLE, 0xD244519000000000000000000000000000000000);
+        _grantRole(MANAGER_ROLE, MULTISIG_ADDRESS);
         isActive = true;
     }
 
@@ -98,7 +103,7 @@ contract sFUELFaucet is AccessControl {
      * @dev Withdraw all SFUEL amount to the owner
      */
     function withdraw() external onlyRole(MANAGER_ROLE) {
-        payable(owner()).transfer(getBalance());
+        payable(MULTISIG_ADDRESS).transfer(getBalance());
     }
     
     /**
